@@ -25,3 +25,4 @@ npm run dev
   - Open localhost:5173 in your browser
 
 ## Live Demo Link
+https://ilovenewnop.netlify.app/

@@ -9,7 +9,7 @@ function SortOptions({
     <select
       value={sortOption}
       onChange={(e) => setSortOption(e.target.value)}
-      className="mb-4 p-2 border border-gray-300 rounded-lg bg-white text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      className="mb-4 p-2 border rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
     >
       <option value="default">default</option>
       <option value="asc">ascending</option>

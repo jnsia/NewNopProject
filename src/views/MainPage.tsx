@@ -14,38 +14,48 @@ function Main() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const itemsPerPage = 12;
 
-  useEffect(() => {
-    let newUsersData = JSON.parse(JSON.stringify(usersData));
-
-    // 이름 검색에 대한 결과 필터링
+  const nameSearchFilter = (data: userData[]) => {
     if (searchQuery !== "") {
-      newUsersData = usersData.filter((userData) => {
+      data = usersData.filter((userData) => {
         const username = userData.name;
         const fullusername = username.first + " " + username.last;
         return fullusername.toLowerCase().includes(searchQuery.toLowerCase());
       });
     }
 
-    setFilteredUsersData(newUsersData);
+    setFilteredUsersData(data);
+    return data;
+  };
+
+  const sortOptionFilter = (data: userData[]) => {
+    if (sortOption === "default") return data;
+
+    data.sort((a: userData, b: userData) => {
+      const nameA = (a.name.first + " " + a.name.last).toLowerCase();
+      const nameB = (b.name.first + " " + b.name.last).toLowerCase();
+
+      if (sortOption === "asc") {
+        return nameA.localeCompare(nameB);
+      } else if (sortOption === "desc") {
+        return nameB.localeCompare(nameA);
+      } else return 0;
+    });
+
+    return data;
+  };
+
+  useEffect(() => {
+    let newUsersData = JSON.parse(JSON.stringify(usersData));
+
+    // 이름 검색에 대한 결과 필터링
+    newUsersData = nameSearchFilter(newUsersData);
 
     // 이름에 대한 오름차순, 내림차순 정렬
-    if (sortOption === "asc") {
-      newUsersData.sort((a: userData, b: userData) => {
-        const nameA = (a.name.first + " " + a.name.last).toLowerCase();
-        const nameB = (b.name.first + " " + b.name.last).toLowerCase();
-        return nameA.localeCompare(nameB);
-      });
-    } else if (sortOption === "desc") {
-      newUsersData.sort((a: userData, b: userData) => {
-        const nameA = (a.name.first + " " + a.name.last).toLowerCase();
-        const nameB = (b.name.first + " " + b.name.last).toLowerCase();
-        return nameB.localeCompare(nameA);
-      });
-    }
+    newUsersData = sortOptionFilter(newUsersData);
 
     // 페이지네이션
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -54,19 +64,30 @@ function Main() {
     setPaginatedUsersData(newUsersData.slice(startIndex, endIndex));
   }, [searchQuery, sortOption, currentPage, usersData]);
 
-  useEffect(() => {
+  const getUsersData = () => {
+    const params = {
+      // https://randomuser.me/documentation#pagination
+      results: 300,
+      inc: "name, email, phone, cell, picture",
+    };
+
     api.fetchMultipleData(
-      500,
+      params,
       (response: { data: { results: userData[] } }) => {
         const usersData = response.data.results;
+        console.log(usersData);
         setUsersData(usersData);
-        setIsLoading(false)
+        setIsLoading(false);
       },
       (error: randomuserError) => {
         console.log(error);
         setIsError(true);
       }
     );
+  };
+
+  useEffect(() => {
+    getUsersData();
   }, []);
 
   return (

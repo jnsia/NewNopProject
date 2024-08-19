@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { userData } from "../types/userData";
 import UserInfoModal from "./UserInfoModal";
-import SkeletonUserList from "./skeletons/SkeletonUserList";
+import SkeletonUserList from "../skeletons/SkeletonUserList";
 
 function UserList({
   users,
