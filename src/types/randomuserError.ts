@@ -1,0 +1,3 @@
+interface randomuserError {
+    error: string
+}
