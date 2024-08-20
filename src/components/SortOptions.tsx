@@ -6,15 +6,30 @@ function SortOptions({
   setSortOption: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <select
-      value={sortOption}
-      onChange={(e) => setSortOption(e.target.value)}
-      className="mb-4 p-2 border rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-    >
-      <option value="default">default</option>
-      <option value="asc">ascending</option>
-      <option value="desc">descending</option>
-    </select>
+      <select
+        value={sortOption}
+        onChange={(e) => setSortOption(e.target.value)}
+        className="p-2 border rounded bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option
+          value="default"
+          className="text-gray-700 bg-white hover:bg-blue-100"
+        >
+          Default
+        </option>
+        <option
+          value="asc"
+          className="text-gray-700 bg-white hover:bg-blue-100"
+        >
+          Ascending
+        </option>
+        <option
+          value="desc"
+          className="text-gray-700 bg-white hover:bg-blue-100"
+        >
+          Descending
+        </option>
+      </select>
   );
 }
 

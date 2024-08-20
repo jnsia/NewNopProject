@@ -67,20 +67,20 @@ function Main() {
   const getUsersData = () => {
     const params = {
       // https://randomuser.me/documentation#pagination
-      results: 300,
+      results: 500,
       inc: "name, email, phone, cell, picture",
+      nat: "US"
     };
 
     api.fetchMultipleData(
       params,
       (response: { data: { results: userData[] } }) => {
         const usersData = response.data.results;
-        console.log(usersData);
         setUsersData(usersData);
         setIsLoading(false);
       },
       (error: randomuserError) => {
-        console.log(error);
+        console.error(error);
         setIsError(true);
       }
     );
@@ -91,14 +91,20 @@ function Main() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <div className="text-4xl font-bold text-center">Find Your Client</div>
-      <div className="flex gap-2 mt-4">
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+    <div className="max-w-4xl mx-auto px-2 py-4">
+      <div className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r to-blue-600 from-gray-300">
+        Find Your Client
+      </div>
+      <div className="flex gap-2 mb-4">
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          setCurrentPage={setCurrentPage}
+        />
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
       </div>
       {isError ? (
-        <div className="bg-red-100 text-red-700 border border-red-300 rounded-md p-4 mx-auto max-w-md text-center">
+        <div className="bg-red-100 text-red-700 border border-red-300 rounded p-4 mx-auto max-w-md text-center">
           데이터를 불러오지 못했어요... <br />
           잠시 후에 다시 시도해주세요!
         </div>
